@@ -83,4 +83,5 @@ public class MessageProducer implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
 
     }
+
 }
