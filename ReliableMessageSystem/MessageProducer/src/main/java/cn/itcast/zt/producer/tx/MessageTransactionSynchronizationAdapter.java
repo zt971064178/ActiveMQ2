@@ -6,7 +6,6 @@ import cn.itcast.zt.producer.service.QMessageService;
 import cn.itcast.zt.producer.utils.MessageHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.util.CollectionUtils;
 
@@ -19,10 +18,25 @@ import java.util.List;
 public class MessageTransactionSynchronizationAdapter extends TransactionSynchronizationAdapter {
     private static final Logger log = LoggerFactory.getLogger(MessageTransactionSynchronizationAdapter.class);
 
-    @Autowired
     private TransactionMessageProducer transactionMessageProducer ;
-    @Autowired
+
     private QMessageService qMessageService ;
+
+    public TransactionMessageProducer getTransactionMessageProducer() {
+        return transactionMessageProducer;
+    }
+
+    public void setTransactionMessageProducer(TransactionMessageProducer transactionMessageProducer) {
+        this.transactionMessageProducer = transactionMessageProducer;
+    }
+
+    public QMessageService getqMessageService() {
+        return qMessageService;
+    }
+
+    public void setqMessageService(QMessageService qMessageService) {
+        this.qMessageService = qMessageService;
+    }
 
     @Override
     public int getOrder() {

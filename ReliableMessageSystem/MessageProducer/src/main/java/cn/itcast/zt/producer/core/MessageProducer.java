@@ -1,12 +1,15 @@
 package cn.itcast.zt.producer.core;
 
+import cn.itcast.zt.producer.domain.QMessage;
 import cn.itcast.zt.producer.service.QMessageService;
 import cn.itcast.zt.producer.tx.MessageTransactionSynchronizationAdapter;
 import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.Map;
 
@@ -73,15 +76,36 @@ public class MessageProducer implements InitializingBean {
     }
 
     /**
+     * 消息转换
+     * @param data
+     * @return
+     */
+    private QMessage convertQMessage(Map<String, String> data){
+        QMessage qMessage = new QMessage() ;
+
+        return qMessage;
+    }
+
+    /**
      * 添加事务同步
      */
     private void transactionSynchronize(){
         MessageTransactionSynchronizationAdapter synchronizationAdapter = new MessageTransactionSynchronizationAdapter() ;
+        synchronizationAdapter.setqMessageService(qMessageService);
+        synchronizationAdapter.setTransactionMessageProducer(transactionMessageProducer);
+        TransactionSynchronizationManager.registerSynchronization(synchronizationAdapter);
     }
 
+    /**
+     * 消息队列名称不允许以ack. or ACK.开始
+     * @throws Exception
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
-
+        if(StringUtils.startsWith(destName, "ack.")
+                || StringUtils.startsWith(destName, "ACK.")){
+            log.error("destName must not start with ack. or ACK.");
+            throw new RuntimeException("destName must not start with ack. or ACK.");
+        }
     }
-
 }
