@@ -3,6 +3,8 @@ package cn.itcast.zt.producer.core;
 import cn.itcast.zt.producer.domain.QMessage;
 import cn.itcast.zt.producer.service.QMessageService;
 import cn.itcast.zt.producer.tx.MessageTransactionSynchronizationAdapter;
+import cn.itcast.zt.producer.utils.MessageHolder;
+import cn.itcast.zt.producer.utils.MessageUtils;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -72,7 +75,13 @@ public class MessageProducer implements InitializingBean {
      */
     public void sendMessage(Map<String, String> data) {
         Preconditions.checkArgument(data != null && !data.isEmpty(), "message must not be empty...");
+        transactionSynchronize();
+        QMessage message = convertQMessage(data);
+        int result = qMessageService.addQMessage(message);
 
+        if (result != 0) {
+            MessageHolder.set(message.getMessageId());
+        }
     }
 
     /**
@@ -82,7 +91,27 @@ public class MessageProducer implements InitializingBean {
      */
     private QMessage convertQMessage(Map<String, String> data){
         QMessage qMessage = new QMessage() ;
+        //时间戳
+        Date date = new Date();
+        //生成消息id
+        String messageId = MessageUtils.createMessageId(date);
+        qMessage.setMessageId(messageId);
+        qMessage.setMessageContent(data.get("message"));
+        qMessage.setDestination(destName);
+        qMessage.setTimeStamp(date.getTime());
+        qMessage.setN2(n2 ? 1 : 0);
+        qMessage.setStatus(0);
+        qMessage.setRetry(0);
+        qMessage.setPersistent(persistent ? 1 : 0);
+        qMessage.setTransaction(transaction ? 1 : 0);
 
+        //如果是n2级别的消息
+        if (n2) {
+            // businessMark不允许为空
+            Preconditions.checkArgument(StringUtils.isNotBlank(data.get("businessMark")),
+                    "This queueName:" + destName + "is n2,businessMark must not be empty...");
+            qMessage.setBusinessMark(data.get("businessMark"));
+        }
         return qMessage;
     }
 
