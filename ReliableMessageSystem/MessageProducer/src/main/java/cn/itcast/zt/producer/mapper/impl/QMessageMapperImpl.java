@@ -2,6 +2,8 @@ package cn.itcast.zt.producer.mapper.impl;
 
 import cn.itcast.zt.producer.domain.QMessage;
 import cn.itcast.zt.producer.mapper.QMessageMapper;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,28 +14,33 @@ import java.util.List;
 @Repository
 public class QMessageMapperImpl implements QMessageMapper {
 
+    @Autowired
+    private SqlSession sqlSession ;
+
+    // 根据messageId获取QMessage
     @Override
     public QMessage selectQMessageByMessageId(String messageId) {
-        return null;
+        return sqlSession.selectOne("cn.itcast.zt.producer.mapper.selectQMessageByMessageId", messageId);
     }
 
+    // 添加消息
     @Override
     public int addQMessage(QMessage qMessage) {
-        return 0;
+        return sqlSession.insert("cn.itcast.zt.producer.mapper.addQMessage", qMessage);
     }
 
     @Override
     public int updateQMessage(QMessage qMessage) {
-        return 0;
+        return sqlSession.update("cn.itcast.zt.producer.mapper.updateQMessage", qMessage);
     }
 
     @Override
     public int deleteQMessage(String messageId) {
-        return 0;
+        return sqlSession.delete("cn.itcast.zt.producer.mapper.deleteQMessage", messageId);
     }
 
     @Override
     public List<QMessage> selectAllQMessage(Long currentTime) {
-        return null;
+        return sqlSession.selectList("cn.itcast.zt.producer.mapper.selectAllQMessage", currentTime);
     }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zjp.mq.mapper.QMessageMapper">
+<mapper namespace="cn.itcast.zt.producer.mapper.QMessageMapper">
 
-    <resultMap id="QMessageResultMap" type="com.zjp.mq.entity.QMessage">
+    <resultMap id="QMessageResultMap" type="cn.itcast.zt.producer.domain.QMessage">
         <id column="id" property="id"/>
         <result column="message_id" property="messageId"/>
         <result column="business_mark" property="businessMark"/>
@@ -41,7 +41,7 @@
         </foreach>
     </select>
     <!-- 添加消息-->
-    <insert id="addQMessage" parameterType="com.zjp.mq.entity.QMessage">
+    <insert id="addQMessage" parameterType="cn.itcast.zt.producer.domain.QMessage">
         <if test="businessMark!=null and businessMark!=''">
             INSERT INTO qmessage(message_id,business_mark,status,retry,message_content,destination,
             dest_type,time_stamp)
@@ -57,7 +57,7 @@
     </insert>
 
     <!--更新消息 -->
-    <update id="updateQMessage" parameterType="com.zjp.mq.entity.QMessage">
+    <update id="updateQMessage" parameterType="cn.itcast.zt.producer.domain.QMessage">
         UPDATE qmessage SET
         <if test="retry!=null">
             retry = #{retry},
