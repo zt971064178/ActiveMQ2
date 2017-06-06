@@ -13,11 +13,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(value = "cn.itcast.zt.consumer")
 public class MessageConsumerConfiguration {
-    @Autowired
+    @Autowired(required = false)
     private ConsumerConfig consumerConfig ;
 
     @Bean
     public ActiveMQConnectionFactory activeMQConnectionFactory(){
-        return new ActiveMQConnectionFactory(consumerConfig.getBrokerUrl(), consumerConfig.getUserName(), consumerConfig.getPassword()) ;
+        return new ActiveMQConnectionFactory(consumerConfig.getUserName(), consumerConfig.getPassword(), consumerConfig.getBrokerUrl()) ;
     }
 }

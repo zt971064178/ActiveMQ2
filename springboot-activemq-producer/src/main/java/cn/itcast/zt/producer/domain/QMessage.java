@@ -1,5 +1,6 @@
 package cn.itcast.zt.producer.domain;
 import java.io.Serializable;
+
 /**
  * 消息
  * Created by zhangtian on 2017/6/1.

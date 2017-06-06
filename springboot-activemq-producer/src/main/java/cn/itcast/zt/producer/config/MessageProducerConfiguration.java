@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(value = "cn.itcast.zt.producer")
 public class MessageProducerConfiguration {
 
-    @Autowired(required = false)
+    @Autowired
     private ProducerConfig producerConfig ;
 
     @Bean

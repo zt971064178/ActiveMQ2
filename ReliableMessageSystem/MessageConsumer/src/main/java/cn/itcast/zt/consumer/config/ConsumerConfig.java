@@ -1,11 +1,8 @@
 package cn.itcast.zt.consumer.config;
 
-import org.springframework.stereotype.Component;
-
 /**
  * Created by zhangtian on 2017/6/2.
  */
-@Component
 public class ConsumerConfig {
     private String brokerUrl;
 

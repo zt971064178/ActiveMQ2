@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.Date;
@@ -19,6 +20,7 @@ import java.util.Map;
 /**
  * Created by zhangtian on 2017/6/1.
  */
+@Component
 public class MessageProducer implements InitializingBean {
     private static final Logger log = LoggerFactory.getLogger(MessageProducer.class);
 
@@ -116,7 +118,7 @@ public class MessageProducer implements InitializingBean {
     }
 
     /**
-     * 添加事务同步
+     * 添加事务同步,注册异步事务
      */
     private void transactionSynchronize(){
         MessageTransactionSynchronizationAdapter synchronizationAdapter = new MessageTransactionSynchronizationAdapter() ;
