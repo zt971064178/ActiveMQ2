@@ -80,6 +80,7 @@ public class MessageProducer implements InitializingBean {
         int result = qMessageService.addQMessage(message);
 
         if (result != 0) {
+            transactionMessageProducer.sendMessage(message);
             MessageHolder.set(message.getMessageId());
         }
     }
