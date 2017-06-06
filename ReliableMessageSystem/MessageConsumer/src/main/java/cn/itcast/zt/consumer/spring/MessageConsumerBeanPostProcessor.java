@@ -54,9 +54,9 @@ public class MessageConsumerBeanPostProcessor implements BeanPostProcessor, Orde
 
     @Override
     public void afterSingletonsInstantiated() {
-        activeMQConnectionFactory = (ActiveMQConnectionFactory) beanFactory.getBean("activeMQConnectionFactory");
-        executor = (Executor) beanFactory.getBean("executor");
-        repeatMessageHandle = (RepeatMessageHandle) beanFactory.getBean("repeatMessageHandle");
+        activeMQConnectionFactory = beanFactory.getBean(ActiveMQConnectionFactory.class);
+        executor = beanFactory.getBean(Executor.class);
+        repeatMessageHandle = beanFactory.getBean(RepeatMessageHandle.class);
         try {
             for (Object consumerBean : consumerBeans) {
                 //处理消费者监听器
