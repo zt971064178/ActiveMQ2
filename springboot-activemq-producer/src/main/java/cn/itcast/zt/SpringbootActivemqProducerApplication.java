@@ -41,13 +41,13 @@ public class SpringbootActivemqProducerApplication {
 	@GetMapping(value = "createMessage")
 	public String createMessage() {
 		producer.setDestName("zhangtian.queue");
-		producer.setN2(true);
-		producer.setTransaction(false);
-		producer.setPersistent(false);
+		producer.setN2(false);
+		producer.setTransaction(true);
+		producer.setPersistent(true);
 
 		Map<String, String> data = new HashMap<String, String>() ;
 		data.put("message", "我爱北京天安门，天安门前是我家！") ;
-		data.put("businessMark", "AAA") ;
+		//data.put("businessMark", "AAA") ;
 		producer.sendMessage(data);
 
 		return "SUCCESS..." ;

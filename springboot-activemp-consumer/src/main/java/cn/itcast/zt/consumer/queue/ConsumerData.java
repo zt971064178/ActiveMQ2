@@ -9,7 +9,7 @@ import cn.itcast.zt.consumer.core.Event;
  */
 @Consumer
 public class ConsumerData {
-    @Listener(topic = "zhangtian.queue", transaction = false, n2 = true)
+    @Listener(topic = "zhangtian.queue", transaction = true, n2 = false)
     public String getMessage(Event event) {
         System.out.println(event.messageId());
         System.out.println(event.topic());
