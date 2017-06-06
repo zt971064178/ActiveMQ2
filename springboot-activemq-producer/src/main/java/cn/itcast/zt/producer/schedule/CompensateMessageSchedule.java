@@ -27,8 +27,8 @@ public class CompensateMessageSchedule {
     /**
      * 对于发送失败没有消费的消息，定时重新发送
      */
-    //@Scheduled(cron = "0 0/10 * * * ?")
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(cron = "0 0/10 * * * ?")
+    // @Scheduled(fixedRate = 5000)
     public void compensateJob() {
         List<QMessage> messages = null;
         try {
