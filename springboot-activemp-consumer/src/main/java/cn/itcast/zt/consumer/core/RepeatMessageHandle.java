@@ -32,7 +32,7 @@ public class RepeatMessageHandle {
         String messageId = (String) params.get("messageId");
         Long timeStamp = Long.valueOf((String) params.get("timeStamp"));
         String topic = (String) params.get("destination");
-        params.put("destName", params.get("destination"));
+        params.put("destName" ,params.get("destination")) ;
 
         StringEvent event = new StringEvent(messageId, topic, data);
         // n1级别的消息

@@ -101,6 +101,7 @@ public class TransactionMessageProducer implements BeanFactoryAware, SmartInitia
             message.setString("messageId", qMessage.getMessageId());
             message.setString("data", qMessage.getMessageContent());
             message.setString("timeStamp", String.valueOf(qMessage.getTimeStamp()));
+            message.setString("destination", String.valueOf(qMessage.getDestination()));
 
             // 如果消息是n2级别，创建业务标识
             if (qMessage.getN2() != 0) {

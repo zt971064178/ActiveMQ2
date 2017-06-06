@@ -26,6 +26,9 @@ CREATE TABLE `qmessage` (
   `dest_type` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '消息类型',
   `time_stamp` bigint(25) unsigned NOT NULL DEFAULT '0' COMMENT '时间戳',
   `retry` int(11) unsigned NOT NULL DEFAULT '1' COMMENT '重发次数',
+  `transaction` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '是否是事务消息',
+  `persistent` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消息持久化',
+  `n2` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'n2消息识别',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_message_id` (`message_id`) USING BTREE COMMENT '消息id唯一'
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

@@ -11,12 +11,15 @@
         <result column="destination" property="destination"/>
         <result column="dest_type" property="destType"/>
         <result column="time_stamp" property="timeStamp"/>
+        <result column="transaction" property="transaction" />
+        <result column="persistent" property="persistent" />
+        <result column="n2" property="n2" />
     </resultMap>
 
     <!-- 根据messageId查询消息-->
     <select id="selectQMessageByMessageId" parameterType="java.lang.String" resultMap="QMessageResultMap">
         SELECT  id,message_id,business_mark,message_content,status,retry,
-        destination,dest_type,time_stamp
+        destination,dest_type,time_stamp,transaction,persistent,n2
         FROM qmessage
         WHERE  message_id = #{messageId}
     </select>
@@ -24,7 +27,7 @@
     <!-- 获取所有未消费的消息-->
     <select id="selectAllQMessage" resultMap="QMessageResultMap" parameterType="java.lang.Long">
         SELECT id,message_id,business_mark,message_content,status,retry,
-        destination,dest_type,time_stamp
+        destination,dest_type,time_stamp,transaction,persistent,n2
         FROM qmessage
         WHERE time_stamp &lt;#{currentTime}-2000
         ORDER BY time_stamp ASC
@@ -32,7 +35,7 @@
 
     <select id="selectQMessages" resultMap="QMessageResultMap" parameterType="java.util.List">
         SELECT id,message_id,business_mark,message_content,status,retry,
-        destination,dest_type,time_stamp
+        destination,dest_type,time_stamp,transaction,persistent,n2
         FROM qmessage
         WHERE message_id IN
         <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
@@ -43,15 +46,16 @@
     <insert id="addQMessage" parameterType="cn.itcast.zt.producer.domain.QMessage">
         <if test="businessMark!=null and businessMark!=''">
             INSERT INTO qmessage(message_id,business_mark,status,retry,message_content,destination,
-            dest_type,time_stamp)
+            dest_type,time_stamp,transaction,persistent,n2)
             VALUES (#{messageId},#{businessMark},#{status},#{retry},
-            #{messageContent},#{destination},#{destType},#{timeStamp})
+            #{messageContent},#{destination},#{destType},#{timeStamp},
+            #{transaction},#{persistent},#{n2})
         </if>
         <if test="businessMark==null">
             INSERT INTO qmessage(message_id,status,retry,message_content,destination,
-            dest_type,time_stamp)
+            dest_type,time_stamp,transaction,persistent,n2)
             VALUES (#{messageId},#{status},#{retry},#{messageContent},#{destination},
-            #{destType},#{timeStamp})
+            #{destType},#{timeStamp},#{transaction},#{persistent},#{n2})
         </if>
     </insert>
 
@@ -63,6 +67,15 @@
         </if>
         <if test="status!=null">
             status=#{status}
+        </if>
+        <if test="transaction != null">
+            transaction=#{transaction}
+        </if>
+        <if test="persistent != null">
+            persistent=#{persistent}
+        </if>
+        <if test="n2 != null">
+            n2=#{n2}
         </if>
         WHERE message_id=#{messageId}
     </update>
